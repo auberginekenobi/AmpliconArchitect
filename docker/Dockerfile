@@ -1,5 +1,5 @@
 # Use an official Python runtime as a parent image
-FROM ubuntu
+FROM ubuntu:18.04
 
 # Build in non-interactive mode for online continuous building
 ARG DEBIAN_FRONTEND=noninteractive
@@ -12,9 +12,21 @@ RUN mkdir -p /home/programs
 
 #Download libraries for AA
 RUN apt-get update && apt-get install -y
-RUN apt-get install libbz2-dev liblzma-dev python-dev gfortran python-numpy python-scipy python-matplotlib python-pip zlib1g-dev samtools wget unzip -y
-RUN pip install Cython
-RUN pip install pysam Flask
+RUN apt-get install -y \
+gfortran \
+libbz2-dev \
+liblzma-dev \
+python-dev \
+samtools \
+ttf-mscorefonts-installer \
+unzip \
+wget \
+zlib1g-dev
+RUN apt-get install -y python-pip
+RUN pip install --upgrade pip
+RUN apt-get install -y python-matplotlib python-numpy python-scipy
+RUN pip install Cython pysam Flask intervaltree
+RUN pip install --upgrade matplotlib
 
 RUN cd /home/programs && wget http://download.mosek.com/stable/8.0.0.60/mosektoolslinux64x86.tar.bz2
 RUN cd /home/programs && tar xf mosektoolslinux64x86.tar.bz2
